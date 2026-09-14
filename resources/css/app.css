@@ -112,7 +112,7 @@
         @apply text-base font-semibold tracking-tight;
     }
     .topbar-meta {
-        @apply text-sm font-semibold text-slate-800;
+        @apply text-base font-semibold tracking-wide text-slate-900;
         font-family: var(--font-mono);
     }
     .content {
@@ -173,7 +173,7 @@
         @apply mb-1 text-base font-semibold;
     }
     .panel-caption {
-        @apply mb-4 text-[13px] text-slate-700;
+        @apply mb-4 text-sm text-slate-900;
     }
     .panel-caption a {
         @apply font-semibold text-indigo-600 no-underline;
