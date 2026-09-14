@@ -99,7 +99,7 @@
 @push('scripts')
 <script>
     Chart.defaults.font.family = 'Inter';
-    Chart.defaults.color = '#64748B';
+    Chart.defaults.color = '#0F172A';
 
     const rackLabels = @json($utilization->pluck('rack'));
     const rackIndexUrl = "{{ route('rack.index') }}";
@@ -116,8 +116,8 @@
             },
             onHover: (evt, elements) => { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
             scales: {
-                y: { min: 0, max: 45, ticks: { stepSize: 15, font: { family: 'JetBrains Mono', size: 10.5 } }, grid: { color: '#E2E8F0' } },
-                x: { ticks: { font: { family: 'JetBrains Mono', size: 10.5 } }, grid: { display: false } }
+                y: { min: 0, max: 45, ticks: { stepSize: 15, font: { family: 'Inter', size: 11.5 } }, grid: { color: '#E2E8F0' } },
+                x: { ticks: { font: { family: 'Inter', size: 11.5 } }, grid: { display: false } }
             }
         }
     });
@@ -132,14 +132,14 @@
             ]
         },
         options: {
-            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11, family: 'Inter' } } } },
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 12, family: 'Inter' } } } },
             scales: {
                 y: {
                     beginAtZero: true, suggestedMax: 5,
-                    ticks: { font: { size: 10.5, family: 'JetBrains Mono' }, precision: 0, stepSize: 1 },
+                    ticks: { font: { size: 11.5, family: 'Inter' }, precision: 0, stepSize: 1 },
                     grid: { color: '#E2E8F0' },
                 },
-                x: { ticks: { font: { size: 10.5, family: 'Inter' } }, grid: { display: false } }
+                x: { ticks: { font: { size: 11.5, family: 'Inter' } }, grid: { display: false } }
             }
         }
     });

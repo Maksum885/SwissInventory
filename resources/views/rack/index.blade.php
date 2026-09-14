@@ -109,7 +109,7 @@
             ctx.lineWidth = 4;
             ctx.strokeRect(8, 26, 304, 76);
             ctx.fillStyle = '#312E81';
-            ctx.font = 'bold 46px "JetBrains Mono", monospace';
+            ctx.font = 'bold 46px Inter, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(code, 160, 66);
