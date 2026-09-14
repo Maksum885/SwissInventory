@@ -16,6 +16,26 @@
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
+/*
+ * Font di-hosting lokal (bukan Google Fonts CDN) — PC di lokasi SWIS tidak ada
+ * akses internet, jadi semua asset (font, Three.js, Chart.js) harus berdiri
+ * sendiri di dalam project ini. Lihat public/vendor/fonts/.
+ */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('/vendor/fonts/inter.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('/vendor/fonts/jetbrains-mono.woff2') format('woff2');
+}
+
 @layer base {
     * {
         box-sizing: border-box;
