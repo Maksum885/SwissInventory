@@ -63,9 +63,12 @@
         const W = container.clientWidth, H = container.clientHeight;
         const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 1000);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: false });
         renderer.setSize(W, H);
-        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        // Dibatasi max 1.5 — di layar dengan Windows display scaling (125%/150%),
+        // devicePixelRatio mentah bisa >1 dan melipatgandakan beban render tanpa
+        // manfaat visual berarti. Penting untuk GPU lemah (PC industrial).
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
         container.appendChild(renderer.domElement);
 
         scene.add(new THREE.AmbientLight(0xffffff, 0.85));
@@ -197,6 +200,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
+            if (document.hidden) return; // hemat GPU/CPU saat tab tidak sedang dilihat
             applyCam();
             renderer.render(scene, camera);
         }
@@ -245,9 +249,9 @@
         const width = container.clientWidth, height = container.clientHeight;
         const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: false });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
         container.appendChild(renderer.domElement);
 
         scene.add(new THREE.AmbientLight(0xffffff, 0.8));
@@ -296,11 +300,17 @@
 
             const mats = [];
             buildRackFrame(originX, originZ, mats);
+
+            // Satu material dipakai BARENG oleh ke-45 slot rack ini (dulu tiap slot
+            // punya material sendiri-sendiri -> 8 rack x 45 = 360 material total,
+            // padahal warnanya selalu sama & selalu di-toggle bareng lewat
+            // setRackGrayed() di bawah). Sharing ini memangkas jumlah objek material
+            // ~94% -> jauh lebih ringan untuk GPU lemah (PC industrial).
+            const crateMat = new THREE.MeshStandardMaterial({ color: crateColor });
+            mats.push(crateMat);
             for (let c = 1; c <= COLUMNS; c++) {
                 for (let l = 1; l <= ROWS; l++) {
-                    const mat = new THREE.MeshStandardMaterial({ color: crateColor });
-                    mats.push(mat);
-                    const mesh = new THREE.Mesh(crateGeo, mat);
+                    const mesh = new THREE.Mesh(crateGeo, crateMat);
                     mesh.position.set(originX + ((COLUMNS + 1) / 2 - c) * 1.0, l * 1.0, originZ);
                     mesh.visible = false;
                     rackGroup.add(mesh);
@@ -365,6 +375,7 @@
         }, { passive: false });
         function animate() {
             requestAnimationFrame(animate);
+            if (document.hidden) return; // hemat GPU/CPU saat tab tidak sedang dilihat
             if (autoRotate) rotY += 0.0025;
             applyCamera();
             renderer.render(scene, camera);
